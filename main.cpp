@@ -15,8 +15,10 @@ AnsiString form_align_x="none";
 AnsiString form_align_y="none";
 int custom_x=0;
 int custom_y=0;
-int custom_alpha=255;
+int hover_alpha=255;
+int no_hover_alpha=0;
 bool visible_no_alpha=false;
+bool enable_hover=true;
 //---------------------------------------------------------------------------
 __fastcall TMainForm::TMainForm(TComponent* Owner)
         : TForm(Owner)
@@ -39,12 +41,19 @@ void __fastcall TMainForm::StartupTimer(TObject *Sender)
                 if(cur_str==":form_align_y")form_align_y=next_str;
                 if(cur_str==":custom_x")custom_x=StrToInt(next_str);
                 if(cur_str==":custom_y")custom_y=StrToInt(next_str);
-                if(cur_str==":alphablendvalue")custom_alpha=StrToInt(next_str);
+                if(cur_str==":hover_alpha")hover_alpha=StrToInt(next_str);
                 if(cur_str==":taskbar_fix" && next_str=="true")visible_no_alpha=true;
                 if(cur_str==":top_fix" && next_str=="true")FixTimer->Enabled=true;
                 if(cur_str==":top_fix_interval")FixTimer->Interval=StrToInt(next_str);
                 if(cur_str==":greenscreen" && next_str=="true")MainForm->TransparentColor=true;
+                if(cur_str==":no_hover_alpha")no_hover_alpha=StrToInt(next_str);               
+                if(cur_str==":no_hover_interval")HoverTimer->Interval=StrToInt(next_str);
+                if(cur_str==":hover" && next_str=="true")enable_hover=true;
         }
+        if(no_hover_alpha<1)no_hover_alpha=1;
+        if(hover_alpha<1)hover_alpha=1;
+        if(no_hover_alpha>255)no_hover_alpha=255;
+        if(hover_alpha>255)hover_alpha=255;
         btn->Left=0;
         btn->Top=0;
         if(FileExists(btn_file_name))
@@ -89,7 +98,8 @@ void __fastcall TMainForm::StartupTimer(TObject *Sender)
         {
                 MainForm->Top=custom_y;
         }
-        MainForm->AlphaBlendValue=custom_alpha;
+        MainForm->AlphaBlendValue=hover_alpha;
+        if(enable_hover)HoverTimer->Enabled=true;
 }
 //---------------------------------------------------------------------------
 
@@ -128,7 +138,7 @@ void __fastcall TMainForm::btnClick(TObject *Sender)
                         ScreenShotBox->Picture->SaveToFile(filename_to_save);
                 }
         }
-        MainForm->AlphaBlendValue=custom_alpha;
+        MainForm->AlphaBlendValue=hover_alpha;
         if(visible_no_alpha==true)MainForm->Visible=true;
 }
 //---------------------------------------------------------------------------
@@ -138,4 +148,27 @@ void __fastcall TMainForm::FixTimerTimer(TObject *Sender)
         MainForm->FormStyle=fsStayOnTop;        
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TMainForm::HoverTimerTimer(TObject *Sender)
+{
+        HoverTimer->Enabled=false;
+        MainForm->AlphaBlendValue=no_hover_alpha;        
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::FormMouseMove(TObject *Sender,
+      TShiftState Shift, int X, int Y)
+{
+        if(enable_hover==true)
+        {
+                HoverTimer->Enabled=false;
+                if(MainForm->AlphaBlendValue==no_hover_alpha)
+                {
+                        MainForm->AlphaBlendValue=hover_alpha;
+                }            
+                HoverTimer->Enabled=true;
+        }
+}
+//---------------------------------------------------------------------------
+
 

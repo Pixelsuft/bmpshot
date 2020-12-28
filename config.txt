@@ -8,8 +8,8 @@ Uses only if form_align_x = custom
 :custom_y
 100
 Uses only if form_align_y = custom
-:alphablendvalue
-255
+:hover_alpha
+100
 :greenscreen
 false
 color is clLime (0,255,0)
@@ -19,4 +19,10 @@ true
 true
 :top_fix_interval
 75
+:hover
+true
+:no_hover_timer
+2000
+:no_hover_alpha
+1
 :endconfig

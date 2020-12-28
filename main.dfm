@@ -45,6 +45,7 @@ object MainForm: TMainForm
   OldCreateOrder = False
   Position = poDefault
   Visible = True
+  OnMouseMove = FormMouseMove
   PixelsPerInch = 96
   TextHeight = 13
   object btn: TImage
@@ -471,6 +472,7 @@ object MainForm: TMainForm
       277FFF277FFF277FFF277FFF277FFF277FFF277FFF277FFF277FFF277FFF277F
       FF277FFF277FFF000000}
     OnClick = btnClick
+    OnMouseMove = FormMouseMove
   end
   object ScreenShotBox: TImage
     Left = 80
@@ -505,5 +507,12 @@ object MainForm: TMainForm
     OnTimer = FixTimerTimer
     Left = 576
     Top = 136
+  end
+  object HoverTimer: TTimer
+    Enabled = False
+    Interval = 2000
+    OnTimer = HoverTimerTimer
+    Left = 560
+    Top = 40
   end
 end
