@@ -1,6 +1,6 @@
 object MainForm: TMainForm
   Left = 255
-  Top = 125
+  Top = 124
   HorzScrollBar.Visible = False
   VertScrollBar.Visible = False
   AlphaBlend = True
@@ -8,7 +8,7 @@ object MainForm: TMainForm
   BorderIcons = []
   BorderStyle = bsNone
   Caption = 'BMPShot'
-  ClientHeight = 461
+  ClientHeight = 462
   ClientWidth = 854
   Color = clBtnFace
   TransparentColorValue = clLime
@@ -514,5 +514,12 @@ object MainForm: TMainForm
     OnTimer = HoverTimerTimer
     Left = 560
     Top = 40
+  end
+  object ChangeAlpha: TTimer
+    Enabled = False
+    Interval = 1
+    OnTimer = ChangeAlphaTimer
+    Left = 496
+    Top = 64
   end
 end

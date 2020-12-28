@@ -18,7 +18,7 @@ int custom_y=0;
 int hover_alpha=255;
 int no_hover_alpha=0;
 bool visible_no_alpha=false;
-bool enable_hover=true;
+bool enable_hover=false;
 bool in_alpha=false;
 int hover_speed_timer=1;
 int hover_speed=1;
@@ -55,7 +55,10 @@ void __fastcall TMainForm::StartupTimer(TObject *Sender)
                 {
                         no_hover_interval=StrToInt(next_str);
                         HoverTimer->Interval=no_hover_interval;
-                }
+                        ChangeAlpha->Interval=no_hover_interval;
+                }                                                       
+                if(cur_str==":hover_speed")hover_speed=StrToInt(next_str);
+                if(cur_str==":hover_slow_timer")hover_speed_timer=StrToInt(next_str);
                 if(cur_str==":hover" && next_str=="true")enable_hover=true;
         }
         if(no_hover_alpha<1)no_hover_alpha=1;
@@ -149,7 +152,11 @@ void __fastcall TMainForm::btnClick(TObject *Sender)
         }
         MainForm->AlphaBlendValue=hover_alpha;
         if(visible_no_alpha==true)MainForm->Visible=true;
-        }
+        }                 
+        ChangeAlpha->Enabled=false;
+        MainForm->AlphaBlendValue=hover_alpha;
+        in_alpha=false;
+        if(enable_hover==true)HoverTimer->Enabled=true;
 }
 //---------------------------------------------------------------------------
 
@@ -190,12 +197,28 @@ void __fastcall TMainForm::FormMouseMove(TObject *Sender,
                         HoverTimer->Enabled=false;
                         if(MainForm->AlphaBlendValue==no_hover_alpha)
                         {
-                                MainForm->AlphaBlendValue=hover_alpha;
+                                in_alpha=true;
+                                ChangeAlpha->Enabled=true;
                         }
-                        HoverTimer->Enabled=true;
+                        else HoverTimer->Enabled=true;
                 }
         }
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TMainForm::ChangeAlphaTimer(TObject *Sender)
+{
+        if(MainForm->AlphaBlendValue>=hover_alpha)
+        {
+                ChangeAlpha->Enabled=false;
+                MainForm->AlphaBlendValue=hover_alpha;
+                in_alpha=false;
+        }
+        else
+        {
+                MainForm->AlphaBlendValue+=hover_speed;
+        }
+}
+//---------------------------------------------------------------------------
 
