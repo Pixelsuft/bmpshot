@@ -32,11 +32,9 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 void __fastcall TMainForm::StartupTimer(TObject *Sender)
 {
         Startup->Enabled=false;
-        if(FileExists("config.txt"))
-        {
-                config->Lines->LoadFromFile("config.txt");
-        }
-        for(int i=0;i<=100;i++)
+        if(!FileExists("config.txt"))config->Lines->SaveToFile("config.txt");
+        else config->Lines->LoadFromFile("config.txt");
+        for(int i=0;i<=500;i++)
         {
                 AnsiString cur_str=config->Lines->Strings[i];
                 AnsiString next_str=config->Lines->Strings[i+1];
@@ -45,6 +43,7 @@ void __fastcall TMainForm::StartupTimer(TObject *Sender)
                 if(cur_str==":form_align_y")form_align_y=next_str;
                 if(cur_str==":custom_x")custom_x=StrToInt(next_str);
                 if(cur_str==":custom_y")custom_y=StrToInt(next_str);
+                if(cur_str==":button")btn_file_name=next_str;
                 if(cur_str==":hover_alpha")hover_alpha=StrToInt(next_str);
                 if(cur_str==":taskbar_fix" && next_str=="true")visible_no_alpha=true;
                 if(cur_str==":top_fix" && next_str=="true")FixTimer->Enabled=true;

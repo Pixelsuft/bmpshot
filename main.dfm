@@ -486,6 +486,41 @@ object MainForm: TMainForm
     Top = 152
     Width = 185
     Height = 89
+    Lines.Strings = (
+      ':form_align_x'
+      'right'
+      ':form_align_y'
+      'down'
+      ':custom_x'
+      '100'
+      'Uses only if form_align_x = custom'
+      ':custom_y'
+      '100'
+      'Uses only if form_align_y = custom'
+      ':hover_alpha'
+      '100'
+      ':greenscreen'
+      'false'
+      'color is clLime (0,255,0)'
+      ':taskbar_fix'
+      'true'
+      ':top_fix'
+      'true'
+      ':top_fix_interval'
+      '75'
+      ':hover'
+      'true'
+      ':no_hover_timer'
+      '2000'
+      ':no_hover_alpha'
+      '1'
+      ':hover_speed'
+      '3'
+      ':hover_slow_timer'
+      '1'
+      ':btn'
+      'btn.bmp'
+      ':endconfig')
     TabOrder = 0
     Visible = False
   end
@@ -496,6 +531,7 @@ object MainForm: TMainForm
     Top = 72
   end
   object Save: TSaveDialog
+    FileName = 'ScreenShot'
     Filter = 'BMP Files|*.bmp'
     Options = [ofHideReadOnly]
     Title = 'Save ScreenShot'

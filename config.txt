@@ -25,4 +25,10 @@ true
 2000
 :no_hover_alpha
 1
+:hover_speed
+3
+:hover_slow_timer
+1
+:btn
+btn.bmp
 :endconfig
