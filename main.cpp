@@ -221,3 +221,4 @@ void __fastcall TMainForm::ChangeAlphaTimer(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+

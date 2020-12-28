@@ -11,7 +11,7 @@ Uses only if form_align_y = custom
 :hover_alpha
 100
 :greenscreen
-false
+true
 color is clLime (0,255,0)
 :taskbar_fix
 true
@@ -29,6 +29,6 @@ true
 3
 :hover_slow_timer
 1
-:btn
+:button
 btn.bmp
 :endconfig
