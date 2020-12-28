@@ -213,6 +213,7 @@ void __fastcall TMainForm::ChangeAlphaTimer(TObject *Sender)
                 ChangeAlpha->Enabled=false;
                 MainForm->AlphaBlendValue=hover_alpha;
                 in_alpha=false;
+                HoverTimer->Enabled=true;
         }
         else
         {
