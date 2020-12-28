@@ -19,6 +19,10 @@ int hover_alpha=255;
 int no_hover_alpha=0;
 bool visible_no_alpha=false;
 bool enable_hover=true;
+bool in_alpha=false;
+int hover_speed_timer=1;
+int hover_speed=1;
+int no_hover_interval=2000;
 //---------------------------------------------------------------------------
 __fastcall TMainForm::TMainForm(TComponent* Owner)
         : TForm(Owner)
@@ -47,7 +51,11 @@ void __fastcall TMainForm::StartupTimer(TObject *Sender)
                 if(cur_str==":top_fix_interval")FixTimer->Interval=StrToInt(next_str);
                 if(cur_str==":greenscreen" && next_str=="true")MainForm->TransparentColor=true;
                 if(cur_str==":no_hover_alpha")no_hover_alpha=StrToInt(next_str);               
-                if(cur_str==":no_hover_interval")HoverTimer->Interval=StrToInt(next_str);
+                if(cur_str==":no_hover_interval")
+                {
+                        no_hover_interval=StrToInt(next_str);
+                        HoverTimer->Interval=no_hover_interval;
+                }
                 if(cur_str==":hover" && next_str=="true")enable_hover=true;
         }
         if(no_hover_alpha<1)no_hover_alpha=1;
@@ -105,7 +113,8 @@ void __fastcall TMainForm::StartupTimer(TObject *Sender)
 
 
 void __fastcall TMainForm::btnClick(TObject *Sender)
-{                           
+{
+        if(in_alpha==false){
         MainForm->AlphaBlendValue=0;
         if(visible_no_alpha==true)MainForm->Visible=false;
         HDC dc = GetDC(0);
@@ -140,6 +149,7 @@ void __fastcall TMainForm::btnClick(TObject *Sender)
         }
         MainForm->AlphaBlendValue=hover_alpha;
         if(visible_no_alpha==true)MainForm->Visible=true;
+        }
 }
 //---------------------------------------------------------------------------
 
@@ -151,22 +161,39 @@ void __fastcall TMainForm::FixTimerTimer(TObject *Sender)
 
 void __fastcall TMainForm::HoverTimerTimer(TObject *Sender)
 {
-        HoverTimer->Enabled=false;
-        MainForm->AlphaBlendValue=no_hover_alpha;        
+        if(in_alpha==false)
+        {
+                in_alpha=true;
+                HoverTimer->Interval=hover_speed;
+        }
+        else
+        {
+                MainForm->AlphaBlendValue-=hover_speed;
+                if(MainForm->AlphaBlendValue<=no_hover_alpha)
+                {
+                        HoverTimer->Enabled=false;
+                        HoverTimer->Interval=no_hover_interval;
+                        MainForm->AlphaBlendValue=no_hover_alpha;
+                        in_alpha=false;
+                }
+        }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::FormMouseMove(TObject *Sender,
       TShiftState Shift, int X, int Y)
 {
-        if(enable_hover==true)
+        if(in_alpha==false)
         {
-                HoverTimer->Enabled=false;
-                if(MainForm->AlphaBlendValue==no_hover_alpha)
+                if(enable_hover==true)
                 {
-                        MainForm->AlphaBlendValue=hover_alpha;
-                }            
-                HoverTimer->Enabled=true;
+                        HoverTimer->Enabled=false;
+                        if(MainForm->AlphaBlendValue==no_hover_alpha)
+                        {
+                                MainForm->AlphaBlendValue=hover_alpha;
+                        }
+                        HoverTimer->Enabled=true;
+                }
         }
 }
 //---------------------------------------------------------------------------
