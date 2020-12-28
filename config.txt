@@ -1,0 +1,22 @@
+:form_align_x
+right
+:form_align_y
+down
+:custom_x
+100
+Uses only if form_align_x = custom
+:custom_y
+100
+Uses only if form_align_y = custom
+:alphablendvalue
+255
+:greenscreen
+false
+color is clLime (0,255,0)
+:taskbar_fix
+true
+:top_fix
+true
+:top_fix_interval
+75
+:endconfig
